@@ -26,8 +26,7 @@ I will dump my initial notes from my research then provide an example of how the
 2. Determine the save parameter
 3. Grab the seed that is generated
 4. Base time variable = (generated seed - save parameter) & 0xffffffff
-5. Even when save parameter changes the time variable will be constant
-6. Add to the base time variable with the pattern
+5. Add to the base time variable with the pattern
 ```
 
 Thie process revolves around taking constant actions. This involves starting from the same base frame and the same RTC clock.
@@ -75,7 +74,7 @@ if __name__ == "__main__":
 
 Step 3:
 
-After pressing "A" to generate the seed you must find out what that seed is. This can be done using <CitraRNG>(https://github.com/Admiral-Fish/CitraRNG). From base frame 300 my initial seed is 0x99aad9fa.
+After pressing "A" to generate the seed you must find out what that seed is. This can be done using [CitraRNG](https://github.com/Admiral-Fish/CitraRNG). From base frame 300 my initial seed is 0x99aad9fa.
 
 Step 4:
 
@@ -100,12 +99,6 @@ initial_seed = (0x3cd3267b + 0x5cd7bc7f) & 0xffffffff
 This gives me a initial_seed of 0x99aad9fa which matches.
 
 Step 5:
-
-Even as the save_variable changes the time_variable will remain constant. This relies on two things, the first being that your base frame remains the same and second being that you always use the same RTC.
-
-But on the bright side if either of those two things change it is still easy to calculate the time_variable for different base frames and RTC values.
-
-Step 6:
 
 This is where the fun part begins, actually manipulating the initial seed. This part involves knowing the "pattern" of your game. Determining the pattern is actually fairly simple. It just requires grabbing 4 different initial seeds starting from the base frame.
 
