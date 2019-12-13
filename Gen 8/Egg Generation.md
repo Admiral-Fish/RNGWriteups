@@ -28,7 +28,7 @@ nextPowerTwo(num):
         result <<= 1
     return result - 1
 
-def next(num)
+next(num):
     numTwo = nextPowerTwo(num)
 
     result = nextState() & numTwo
