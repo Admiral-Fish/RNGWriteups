@@ -106,7 +106,7 @@ elif abilityType == 3: # Don't allow hidden ability
 
 Step 7. Gender
 
-There are 4 different gender types a raid can have. It can either be random, female, male, or genderless. If it's random it uses a rand(252) call and compares to the gender ratio for female/male.
+There are 4 different gender types a raid can have. It can either be random, female, male, or genderless. If it's random it uses a rand(253) call and compares to the gender ratio for female/male.
 
 ```
 if genderType == 0: # Random gender
@@ -117,7 +117,7 @@ if genderType == 0: # Random gender
     elif genderRatio == 0: # Locked male
         gender = 0
     else: # Random gender
-        gender = next(252) + 1 < genderRatio
+        gender = next(253) + 1 < genderRatio
 elif genderType == 1: # Male
     gender = 0
 elif genderType == 2: # Female
