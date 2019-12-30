@@ -1,6 +1,6 @@
 # Background Info
 
-This writeup will be split into three sections. One section will be about how the generation of the den type and why this isn't RNGable. The second section will detail how a raid is generated.
+This writeup will be split into two sections. One section will be about how the generation of the den type and why this isn't RNGable. The second section will detail how a raid is generated.
 
 # Den generation
 Den generation occurs at sub_7100E91740. The RNG for den/raid generation is [xoroshiro128+](http://prng.di.unimi.it/xoroshiro128plus.c).
@@ -67,8 +67,15 @@ psv = ((pid >> 16) ^ (pid & 0xFFFF)) >> 4
 
 if otsv == psv: # Shiny
     shiny = True
+    
+    if (otid >> 16) ^ (otid & 0xffff) ^ (pid >> 16) ^ (pid & 0xffff):
+        shinyType = 2
+    else:
+        shinyType = 1
+    
     if psv != realTSV: # Force PID to be shiny from the real TID/SID
-        pid ^= (realTSV << 16)
+        high = (pid & 0xFFFF) ^ realTID ^ realSID ^ (shinyType == 1)
+        pid = (high << 16) | (pid & 0xFFFF)
 else: // Not shiny
     shiny = False
     if psv == realTSV: # Force PID to be not shiny from the real TID/SID
