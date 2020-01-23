@@ -24,12 +24,12 @@ nextPowerTwo(num):
         result <<= 1
     return result - 1
 
-next(num):
-    numTwo = nextPowerTwo(num)
+next(maxValue):
+    mask = nextPowerTwo(maxValue)
 
-    result = nextState() & numTwo
-    while result >= num:
-        result = nextState() & numTwo
+    result = nextState() & mask
+    while result >= maxValue:
+        result = nextState() & mask
     return result
 ```
 
@@ -143,4 +143,13 @@ if species != Toxtricity:
 else:
     natures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
     nature = natures[next(13)]
+```
+
+Step 9. Height/Weight
+
+Height and weight are set to a value of next(129) + next(128).
+
+```
+height = next(129) + next(128)
+weight = next(129) + next(128)
 ```

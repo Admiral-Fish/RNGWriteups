@@ -28,12 +28,12 @@ nextPowerTwo(num):
         result <<= 1
     return result - 1
 
-next(num):
-    numTwo = nextPowerTwo(num)
+next(maxValue):
+    mask = nextPowerTwo(maxValue)
 
-    result = nextState() & numTwo
-    while result >= num:
-        result = nextState() & numTwo
+    result = nextState() & mask
+    while result >= maxValue:
+        result = nextState() & mask
     return result
 ```
 
