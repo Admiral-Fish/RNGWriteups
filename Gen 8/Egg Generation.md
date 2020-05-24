@@ -1,7 +1,3 @@
-# Background Info
-
-This writeup will be split into two sections. One section will be about how the generation of the seed occurs and why this doesn't allow for any type of RNG abuse(retail or emu). The second section will detail how an egg is generated from the egg seed.
-
 # Seed generation
 The RNG for egg generation is [xoroshiro128+](http://prng.di.unimi.it/xoroshiro128plus.c). The very short details of this RNG is that it keeps an internal state of 2 64bit numbers. The 2nd number is a constant number of 0x82A2B175229D6A5B. The 1st number is a little more interesting.
 

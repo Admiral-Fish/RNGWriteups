@@ -1,7 +1,3 @@
-# Background Info
-
-This writeup will be split into two sections. One section will be about how the generation of the den type and why this isn't RNGable. The second section will detail how a raid is generated.
-
 # Den generation
 Den generation occurs at sub_7100E91740. The RNG for den/raid generation is [xoroshiro128+](http://prng.di.unimi.it/xoroshiro128plus.c).
 
