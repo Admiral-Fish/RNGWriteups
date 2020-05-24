@@ -90,9 +90,9 @@ Date = 1/1/2000
 Time = 00:00:00
 Keys = None
 
-message[0] =  0xD0602102
-message[1] =  0xCC612102
-message[2] =  0xCC612102
+message[0] =  0xd0602102
+message[1] =  0xcc612102
+message[2] =  0xcc612102
 message[3] =  0x18622102
 message[4] =  0x18622102
 message[5] =  0x21062f00
@@ -107,7 +107,7 @@ message[13] = 0x80000000
 message[14] = 0x00000000
 message[15] = 0x000001a0
 
-The final h0 and h1 values are 0xDADE8C0C and 0x65D2AB78. After changing the endianness we get 0x0C8CDEDA and 0x78abd265. After the bitwise operations, multiplication, and adding the final initial seed is 0x2ef5257566f334c5.
+The final h0 and h1 values are 0x16a4a8f6 and 0x9a2bb383. After changing the endianness we get 0xf6a8a416 and 0x83b32b9a. After the bitwise operations, multiplication, and adding the final initial seed is 0xb082b4a755192171.
 
 # Seed Generation (C-Gear)
 Compared to non C-Gear seed generation, this is a much simplier process that uses less parameters and doesn't rely on SHA-1. The parameters include date/time, delay, and the MAC address. For those that are familiar with Generation 4 this will look very familiar.
