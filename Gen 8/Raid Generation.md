@@ -31,26 +31,26 @@ next(maxValue):
 
 Step 1. EC
 
-The encryption constant is set a value of next(0xFFFFFFFF).
+The encryption constant is set a value of next(0xffffffff).
 
 ```
-ec = next(0xFFFFFFFF)
+ec = next(0xffffffff)
 ```
 
 Step 2. TID/SID
 
-A temporary TID/SID is set to a value of next(0xFFFFFFFF).
+A temporary TID/SID is set to a value of next(0xffffffff).
 
 ```
-otid = next(0xFFFFFFFF)
+otid = next(0xffffffff)
 ```
 
 Step 3. PID
 
-The PID is set a value of next(0xFFFFFFFF).
+The PID is set a value of next(0xffffffff).
 
 ```
-pid = next(0xFFFFFFFF)
+pid = next(0xffffffff)
 ```
 
 Step 4. Shiny
@@ -58,24 +58,34 @@ Step 4. Shiny
 Shininess for the raid is determined by the temporary TID/SID. Later on any PID modifications will be done using the real TID/SID
 
 ```
-otsv = ((otid >> 16) ^ (otid & 0xFFFF)) >> 4
-psv = ((pid >> 16) ^ (pid & 0xFFFF)) >> 4
+if shinyType == 0: # Random Shiny Chance
+    otsv = ((otid >> 16) ^ (otid & 0xfff)) >> 4
+    psv = ((pid >> 16) ^ (pid & 0xfff)) >> 4
 
-if otsv == psv: # Shiny
+    if otsv == psv: # Shiny
+        shiny = True
+        
+        if (otid >> 16) ^ (otid & 0xffff) ^ (pid >> 16) ^ (pid & 0xffff):
+            shinyType = 2
+        else:
+            shinyType = 1
+        
+        if psv != realTSV: # Force PID to be shiny from the real TID/SID
+            high = (pid & 0xfff) ^ realTID ^ realSID ^ (shinyType == 1)
+            pid = (high << 16) | (pid & 0xffff)
+    else: // Not shiny
+        shiny = False
+        if psv == realTSV: # Force PID to be not shiny from the real TID/SID
+            pid ^= 0x10000000
+elif shinyType == 1: # Force non-shiny
     shiny = True
-    
-    if (otid >> 16) ^ (otid & 0xffff) ^ (pid >> 16) ^ (pid & 0xffff):
-        shinyType = 2
-    else:
-        shinyType = 1
-    
-    if psv != realTSV: # Force PID to be shiny from the real TID/SID
-        high = (pid & 0xFFFF) ^ realTID ^ realSID ^ (shinyType == 1)
-        pid = (high << 16) | (pid & 0xFFFF)
-else: // Not shiny
-    shiny = False
-    if psv == realTSV: # Force PID to be not shiny from the real TID/SID
-        pid ^= 0x10000000
+    psv = ((pid >> 16) ^ (pid & 0xffff)) >> 3
+    if psv == realTSV:
+        pid ^= 0x100000000
+else: # Force Shiny
+    if ((pid >> 16) ^ (pid & 0xffff) ^ realTID ^ realSID) >= 16:
+        high = (pid & 0xffff) ^ realTID ^ realSID
+        pid = (high << 16) | (pid & 0xffff)
 ```
 
 Step 5. IVs
@@ -105,6 +115,8 @@ if abilityType == 4: # Allow hidden ability
     ability = next(3)
 elif abilityType == 3: # Don't allow hidden ability
     ability = next(2)
+else: # Locked ability
+    ability = abilityType
 ```
 
 Step 7. Gender
@@ -131,14 +143,18 @@ elif genderType == 3: # Genderless
 
 Step 8. Nature
 
-Nature is set to a value of next(25). If the raid pokemon is Toxtricity then there is some special handling. For raids Toxtricity appears to be only allowed Amped Form.
+Nature is set to a value of next(25). If the raid pokemon is Toxtricity then there is some special handling.
 
 ```
 if species != Toxtricity:
     nature = next(25)
 else:
-    natures = [3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24]
-    nature = natures[next(13)]
+    if form == Amped:
+        natures = [ 3, 4, 2, 8, 9, 19, 22, 11, 13, 14, 0, 6, 24 ]
+        nature = natures[next(13)]
+    else: # Lowkey
+        natures = [ 1, 5, 7, 10, 12, 15, 16, 17, 18, 20, 21, 23 ]
+        nature = natures[next(12)]
 ```
 
 Step 9. Height/Weight
