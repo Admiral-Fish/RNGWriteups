@@ -59,8 +59,8 @@ Shininess for the raid is determined by the temporary TID/SID. Later on any PID 
 
 ```
 if shinyType == 0: # Random Shiny Chance
-    otsv = ((otid >> 16) ^ (otid & 0xfff)) >> 4
-    psv = ((pid >> 16) ^ (pid & 0xfff)) >> 4
+    otsv = ((otid >> 16) ^ (otid & 0xffff)) >> 4
+    psv = ((pid >> 16) ^ (pid & 0xffff)) >> 4
 
     if otsv == psv: # Shiny
         shiny = True
@@ -71,9 +71,9 @@ if shinyType == 0: # Random Shiny Chance
             shinyType = 1
         
         if psv != realTSV: # Force PID to be shiny from the real TID/SID
-            high = (pid & 0xfff) ^ realTID ^ realSID ^ (shinyType == 1)
+            high = (pid & 0xffff) ^ realTID ^ realSID ^ (shinyType == 1)
             pid = (high << 16) | (pid & 0xffff)
-    else: // Not shiny
+    else: # Not shiny
         shiny = False
         if psv == realTSV: # Force PID to be not shiny from the real TID/SID
             pid ^= 0x10000000
